@@ -1,0 +1,50 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec\"",
+    "build": "tsc && copyfiles -u 1 src/emailTemplates/**/* dist/",
+    "generate": "npx tsoa routes",
+    "migrate": "npx prisma generate && npx prisma migrate dev",
+    "create": "npx prisma generate && npx prisma migrate dev --create-only"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "5.22.0",
+    "bcrypt": "5.1.1",
+    "body-parser": "1.20.3",
+    "cors": "2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "4.21.1",
+    "jsonwebtoken": "9.0.2",
+    "pg": "8.13.1",
+    "prisma": "5.22.0",
+    "swagger-jsdoc": "6.2.8",
+    "swagger-ui-express": "5.0.1",
+    "tsoa": "6.5.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "5.0.2",
+    "@types/cors": "2.8.17",
+    "@types/express": "4.17.21",
+    "@types/jsonwebtoken": "9.0.6",
+    "@types/node": "^22.9.3",
+    "@types/pg": "8.11.6",
+    "@types/swagger-jsdoc": "6.0.4",
+    "@types/swagger-ui-express": "4.1.6",
+    "concurrently": "8.2.2",
+    "copyfiles": "2.4.1",
+    "http-server": "^14.1.1",
+    "husky": "8.0.2",
+    "i": "0.3.7",
+    "nodemon": "3.1.4",
+    "npm": "10.8.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}

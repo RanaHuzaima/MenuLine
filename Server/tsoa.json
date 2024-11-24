@@ -1,0 +1,15 @@
+{
+    "entryFile": "src/index.ts",
+    "noImplicitAdditionalProperties": "throw-on-extras",
+    "spec": {
+      "outputDirectory": "public",
+      "specVersion": 3,
+      "dtoFolder": "./src/dto"
+    },
+    "routes": {
+      "routesDir": "src/routes",
+      "authenticationModule": "src/middleware/authMiddleware"
+    },
+    "controllerPathGlobs": ["src/controllers/**/*.ts"]
+  }
+  
