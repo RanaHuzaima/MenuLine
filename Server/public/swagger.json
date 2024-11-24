@@ -1,0 +1,243 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"JsonValue": {
+				"anyOf": [
+					{
+						"type": "string"
+					},
+					{
+						"type": "number",
+						"format": "double"
+					},
+					{
+						"type": "boolean"
+					},
+					{
+						"$ref": "#/components/schemas/JsonObject"
+					},
+					{
+						"$ref": "#/components/schemas/JsonArray"
+					}
+				],
+				"nullable": true,
+				"description": "From https://github.com/sindresorhus/type-fest/\r\nMatches any valid JSON value."
+			},
+			"JsonObject": {
+				"properties": {},
+				"additionalProperties": {
+					"$ref": "#/components/schemas/JsonValue"
+				},
+				"type": "object",
+				"description": "From https://github.com/sindresorhus/type-fest/\r\nMatches a JSON object.\r\nThis type can be useful to enforce some input to be JSON-compatible or as a super-type to be extended from."
+			},
+			"JsonArray": {
+				"description": "From https://github.com/sindresorhus/type-fest/\r\nMatches a JSON array.",
+				"properties": {},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateRestaurantDTO": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"hours": {
+						"$ref": "#/components/schemas/JsonValue"
+					}
+				},
+				"required": [
+					"name",
+					"address",
+					"phone",
+					"hours"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RestaurantResponseDTO": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"hours": {
+						"$ref": "#/components/schemas/JsonValue"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"address",
+					"phone",
+					"hours"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "server",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/api/v1/restaurants": {
+			"post": {
+				"operationId": "CreateRestaurant",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"restaurant": {
+											"$ref": "#/components/schemas/RestaurantResponseDTO"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"restaurant",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Restaurant"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateRestaurantDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/restaurants/{id}": {
+			"get": {
+				"operationId": "GetRestaurant",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"restaurant": {
+											"$ref": "#/components/schemas/RestaurantResponseDTO"
+										}
+									},
+									"required": [
+										"restaurant"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"404": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Restaurant"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

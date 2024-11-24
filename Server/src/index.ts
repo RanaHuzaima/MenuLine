@@ -1,7 +1,7 @@
-import app from "./app";
 import dotenv from "dotenv";
 import https from "https";
 import fs from "fs";
+import app from "./app";
 
 dotenv.config();
 
