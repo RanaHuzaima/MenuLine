@@ -7,39 +7,23 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"JsonValue": {
-				"anyOf": [
-					{
+			"hours": {
+				"properties": {
+					"dayOfWeek": {
 						"type": "string"
 					},
-					{
-						"type": "number",
-						"format": "double"
+					"openTime": {
+						"type": "string"
 					},
-					{
-						"type": "boolean"
-					},
-					{
-						"$ref": "#/components/schemas/JsonObject"
-					},
-					{
-						"$ref": "#/components/schemas/JsonArray"
+					"closeTime": {
+						"type": "string"
 					}
-				],
-				"nullable": true,
-				"description": "From https://github.com/sindresorhus/type-fest/\r\nMatches any valid JSON value."
-			},
-			"JsonObject": {
-				"properties": {},
-				"additionalProperties": {
-					"$ref": "#/components/schemas/JsonValue"
 				},
-				"type": "object",
-				"description": "From https://github.com/sindresorhus/type-fest/\r\nMatches a JSON object.\r\nThis type can be useful to enforce some input to be JSON-compatible or as a super-type to be extended from."
-			},
-			"JsonArray": {
-				"description": "From https://github.com/sindresorhus/type-fest/\r\nMatches a JSON array.",
-				"properties": {},
+				"required": [
+					"dayOfWeek",
+					"openTime",
+					"closeTime"
+				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -52,16 +36,19 @@
 						"type": "string"
 					},
 					"phone": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					},
 					"hours": {
-						"$ref": "#/components/schemas/JsonValue"
+						"items": {
+							"$ref": "#/components/schemas/hours"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
 					"name",
 					"address",
-					"phone",
 					"hours"
 				],
 				"type": "object",
@@ -80,19 +67,354 @@
 						"type": "string"
 					},
 					"phone": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
+					},
+					"twilioPhone": {
+						"type": "string",
+						"nullable": true
 					},
 					"hours": {
-						"$ref": "#/components/schemas/JsonValue"
+						"items": {
+							"$ref": "#/components/schemas/hours"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
 					"id",
 					"name",
 					"address",
-					"phone",
 					"hours"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LocationResponseDTO": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"restaurantId": {
+						"type": "number",
+						"format": "double"
+					},
+					"address": {
+						"type": "string"
+					},
+					"phoneNumber": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"restaurantId",
+					"address",
+					"phoneNumber"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SpecialHourResponseDTO": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"restaurantId": {
+						"type": "number",
+						"format": "double"
+					},
+					"locationId": {
+						"type": "number",
+						"format": "double"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"openTime": {
+						"type": "string"
+					},
+					"closeTime": {
+						"type": "string"
+					},
+					"reason": {
+						"type": "string"
+					},
+					"isClosed": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"restaurantId",
+					"date",
+					"reason",
+					"isClosed"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetRestaurantByIdResponseDTO": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string",
+						"nullable": true
+					},
+					"twilioPhone": {
+						"type": "string",
+						"nullable": true
+					},
+					"hours": {
+						"items": {
+							"$ref": "#/components/schemas/hours"
+						},
+						"type": "array"
+					},
+					"locations": {
+						"items": {
+							"$ref": "#/components/schemas/LocationResponseDTO"
+						},
+						"type": "array"
+					},
+					"specialHours": {
+						"items": {
+							"$ref": "#/components/schemas/SpecialHourResponseDTO"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"address",
+					"hours",
+					"locations",
+					"specialHours"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateSpecialHourDTO": {
+				"properties": {
+					"restaurantId": {
+						"type": "number",
+						"format": "double"
+					},
+					"locationId": {
+						"type": "number",
+						"format": "double"
+					},
+					"date": {
+						"type": "string"
+					},
+					"openTime": {
+						"type": "string"
+					},
+					"closeTime": {
+						"type": "string"
+					},
+					"reason": {
+						"type": "string"
+					},
+					"isClosed": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"restaurantId",
+					"date",
+					"reason",
+					"isClosed"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DefaultSelection_Prisma._36_SpecialHourPayload_": {
+				"properties": {
+					"locationId": {
+						"type": "number",
+						"format": "double"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isClosed": {
+						"type": "boolean"
+					},
+					"reason": {
+						"type": "string"
+					},
+					"closeTime": {
+						"type": "string"
+					},
+					"openTime": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"restaurantId": {
+						"type": "number",
+						"format": "double"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"locationId",
+					"updatedAt",
+					"createdAt",
+					"isClosed",
+					"reason",
+					"closeTime",
+					"openTime",
+					"date",
+					"restaurantId",
+					"id"
+				],
+				"type": "object"
+			},
+			"SpecialHour": {
+				"$ref": "#/components/schemas/DefaultSelection_Prisma._36_SpecialHourPayload_",
+				"description": "Model SpecialHour"
+			},
+			"CreateLocationDTO": {
+				"properties": {
+					"restaurantId": {
+						"type": "number",
+						"format": "double"
+					},
+					"address": {
+						"type": "string"
+					},
+					"phoneNumber": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"restaurantId",
+					"address",
+					"phoneNumber"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DefaultSelection_Prisma._36_LocationPayload_": {
+				"properties": {
+					"phoneNumber": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"restaurantId": {
+						"type": "number",
+						"format": "double"
+					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"phoneNumber",
+					"address",
+					"updatedAt",
+					"createdAt",
+					"restaurantId",
+					"id"
+				],
+				"type": "object"
+			},
+			"Location": {
+				"$ref": "#/components/schemas/DefaultSelection_Prisma._36_LocationPayload_",
+				"description": "Model Location"
+			},
+			"CreateFaqDTO": {
+				"properties": {
+					"restaurantId": {
+						"type": "number",
+						"format": "double"
+					},
+					"question": {
+						"type": "string"
+					},
+					"answer": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"restaurantId",
+					"question",
+					"answer"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FaqResponseDTO": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"restaurantId": {
+						"type": "number",
+						"format": "double"
+					},
+					"question": {
+						"type": "string"
+					},
+					"answer": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"restaurantId",
+					"question",
+					"answer"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdateFaqDTO": {
+				"properties": {
+					"question": {
+						"type": "string"
+					},
+					"answer": {
+						"type": "string"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -184,7 +506,7 @@
 								"schema": {
 									"properties": {
 										"restaurant": {
-											"$ref": "#/components/schemas/RestaurantResponseDTO"
+											"$ref": "#/components/schemas/GetRestaurantByIdResponseDTO"
 										}
 									},
 									"required": [
@@ -225,6 +547,397 @@
 					{
 						"in": "path",
 						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/restaurants/special-hours": {
+			"post": {
+				"operationId": "AddSpecialHour",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"specialHour": {
+											"$ref": "#/components/schemas/SpecialHour"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"specialHour",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Restaurant"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateSpecialHourDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/restaurants/locations": {
+			"post": {
+				"operationId": "AddLocation",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"location": {
+											"$ref": "#/components/schemas/Location"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"location",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Restaurant"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateLocationDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v1/faqs": {
+			"post": {
+				"operationId": "AddFaq",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"faq": {
+											"$ref": "#/components/schemas/FaqResponseDTO"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"faq",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"FAQs"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateFaqDTO"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetFaqs",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"faqs": {
+											"items": {
+												"$ref": "#/components/schemas/FaqResponseDTO"
+											},
+											"type": "array"
+										}
+									},
+									"required": [
+										"faqs"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"FAQs"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "restaurantId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/v1/faqs/{faqId}": {
+			"put": {
+				"operationId": "UpdateFaq",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"faq": {
+											"$ref": "#/components/schemas/FaqResponseDTO"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"faq",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"FAQs"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "faqId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateFaqDTO"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteFaq",
+				"responses": {
+					"200": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No content"
+					},
+					"400": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"FAQs"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "faqId",
 						"required": true,
 						"schema": {
 							"format": "double",

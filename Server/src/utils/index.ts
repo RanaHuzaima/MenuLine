@@ -19,6 +19,11 @@ export const generateToken = (payload: any) => {
   });
 };
 
+export function generateRandomPhoneNumber(): string {
+  const randomNumber = Math.floor(Math.random() * 1000000000);
+  return `+1${randomNumber}`;
+}
+
 export const verifyToken = (token: string): any => {
   try {
     return jwt.verify(token, process.env.JWT_SECRET!);

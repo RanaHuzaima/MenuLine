@@ -10,3 +10,9 @@ export interface FaqResponseDTO {
   question: string;
   answer: string;
 }
+
+export interface UpdateFaqDTO {
+  question?: string;
+  answer?: string;
+}
+
